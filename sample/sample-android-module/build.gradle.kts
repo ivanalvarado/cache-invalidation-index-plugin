@@ -36,7 +36,6 @@ dependencies {
 
     implementation(libs.appcompat.v7)
     implementation(project(":sample-jvm-module"))
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.runner)
     androidTestImplementation(libs.espresso.core)
