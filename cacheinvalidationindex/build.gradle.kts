@@ -8,11 +8,10 @@ group = "com.ivanalvarado"
 version = "0.0.1"
 
 gradlePlugin {
-    // Define one or more plugins
     plugins {
         create("myPlugin") {
-            id = "com.ivanalvarado.cacheinvalidationindex"          // The plugin ID used in build scripts
-            implementationClass = "com.ivanalvarado.cacheinvalidationindex.MyPlugin" // Fully-qualified plugin implementation class
+            id = "com.ivanalvarado.cacheinvalidationindex"
+            implementationClass = "com.ivanalvarado.cacheinvalidationindex.CacheInvalidationIndexPlugin"
         }
     }
 }
