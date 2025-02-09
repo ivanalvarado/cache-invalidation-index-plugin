@@ -1,10 +1,11 @@
 pluginManagement {
     repositories {
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
     // Include the plugin build. Adjust the relative path as needed.
-    includeBuild("../..//cache-invalidation-index-plugin")
+    includeBuild("../../cache-invalidation-index-plugin")
 }
 
 dependencyResolutionManagement {
@@ -16,3 +17,4 @@ dependencyResolutionManagement {
 }
 
 include(":sample-jvm-module")
+include(":sample-android-module")
