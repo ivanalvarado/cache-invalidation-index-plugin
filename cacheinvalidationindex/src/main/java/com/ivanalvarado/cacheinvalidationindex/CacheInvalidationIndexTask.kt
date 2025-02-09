@@ -14,14 +14,14 @@ abstract class CacheInvalidationIndexTask : DefaultTask() {
 
     @TaskAction
     fun run() {
-        val dependencyPairs = project.rootProject.dependencyPairs()
+        val dependencyPairs = project.rootProject.dependencyPairs(configurationToAnalyze.get())
         println("Dependency Pairs: $dependencyPairs")
     }
 
-    private fun Project.dependencyPairs(): List<Triple<Project, Project, String>> {
+    private fun Project.dependencyPairs(configurationsToAnalyse: Set<String>): List<Triple<Project, Project, String>> {
         return subprojects.flatMap { project ->
             project.configurations
-                .filter { it.name == "implementation" }
+                .filter { configurationsToAnalyse.contains(it.name) }
                 .flatMap { configuration ->
                     println("Configuration: ${configuration.name}")
                     configuration.dependencies.filterIsInstance<ProjectDependency>()
