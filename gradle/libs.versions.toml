@@ -1,12 +1,13 @@
 [versions]
 jetbrainsKotlinJvm = "1.9.24"
+jgrapht = "1.5.1"
 junit = "4.13.2"
 truth = "1.4.4"
 
 [libraries]
+jgrapht-core = { group = "org.jgrapht", name = "jgrapht-core", version.ref = "jgrapht" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
-

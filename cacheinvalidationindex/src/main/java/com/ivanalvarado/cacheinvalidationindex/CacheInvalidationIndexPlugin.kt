@@ -1,5 +1,6 @@
 package com.ivanalvarado.cacheinvalidationindex
 
+import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairsImpl
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairsImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -12,11 +13,12 @@ class CacheInvalidationIndexPlugin : Plugin<Project> {
             "cacheInvalidationIndex",
             CacheInvalidationIndexExtension::class.java
         )
-        val findDependencyPairs = FindDependencyPairsImpl()
+
         val cacheInvalidationIndexTaskProvider = project.tasks.register(
             "cacheInvalidationIndex",
             CacheInvalidationIndexTask::class.java,
-            findDependencyPairs
+            FindDependencyPairsImpl(),
+            BuildDagFromDependencyPairsImpl()
         )
         cacheInvalidationIndexTaskProvider.configure { task ->
             task.configurationToAnalyze.set(extension.configurationToAnalyze)
