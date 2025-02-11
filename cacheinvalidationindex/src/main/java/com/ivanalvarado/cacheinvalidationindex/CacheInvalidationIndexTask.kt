@@ -1,32 +1,24 @@
 package com.ivanalvarado.cacheinvalidationindex
 
+import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairs
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
-import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
+import javax.inject.Inject
 
-abstract class CacheInvalidationIndexTask : DefaultTask() {
+abstract class CacheInvalidationIndexTask @Inject constructor(
+    private val findDependencyPairs: FindDependencyPairs
+) : DefaultTask() {
 
     @get:Input
     abstract val configurationToAnalyze: SetProperty<String>
 
     @TaskAction
     fun run() {
-        val dependencyPairs = project.rootProject.dependencyPairs(configurationToAnalyze.get())
-        println("Dependency Pairs: $dependencyPairs")
-    }
-
-    private fun Project.dependencyPairs(configurationsToAnalyse: Set<String>): List<Triple<Project, Project, String>> {
-        return subprojects.flatMap { project ->
-            project.configurations
-                .filter { configurationsToAnalyse.contains(it.name) }
-                .flatMap { configuration ->
-                    println("Configuration: ${configuration.name}")
-                    configuration.dependencies.filterIsInstance<ProjectDependency>()
-                        .map { Triple(project, it.dependencyProject, configuration.name) }
-                }
-        }
+        val rootProject = project.rootProject
+        val configurationsToAnalyze = configurationToAnalyze.get()
+        val sampleList = findDependencyPairs(rootProject, configurationsToAnalyze)
+        println("Dependency Pairs: $sampleList")
     }
 }

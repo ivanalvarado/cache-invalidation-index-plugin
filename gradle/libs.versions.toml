@@ -1,9 +1,11 @@
 [versions]
-junit = "4.13.2"
 jetbrainsKotlinJvm = "1.9.24"
+junit = "4.13.2"
+truth = "1.4.4"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
