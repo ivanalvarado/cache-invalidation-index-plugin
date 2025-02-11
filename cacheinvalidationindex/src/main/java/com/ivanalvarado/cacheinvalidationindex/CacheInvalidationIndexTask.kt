@@ -1,5 +1,6 @@
 package com.ivanalvarado.cacheinvalidationindex
 
+import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairs
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairs
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.SetProperty
@@ -8,7 +9,8 @@ import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
 abstract class CacheInvalidationIndexTask @Inject constructor(
-    private val findDependencyPairs: FindDependencyPairs
+    private val findDependencyPairs: FindDependencyPairs,
+    private val buildDagFromDependencyPairs: BuildDagFromDependencyPairs
 ) : DefaultTask() {
 
     @get:Input
@@ -20,5 +22,7 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         val configurationsToAnalyze = configurationToAnalyze.get()
         val sampleList = findDependencyPairs(rootProject, configurationsToAnalyze)
         println("Dependency Pairs: $sampleList")
+        val dag = buildDagFromDependencyPairs(sampleList)
+        println("DAG: $dag")
     }
 }
