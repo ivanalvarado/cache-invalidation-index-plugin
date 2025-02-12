@@ -1,5 +1,6 @@
 package com.ivanalvarado.cacheinvalidationindex
 
+import com.ivanalvarado.cacheinvalidationindex.domain.usecase.AffectedSubgraphsImpl
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairsImpl
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairsImpl
 import org.gradle.api.Plugin
@@ -18,7 +19,8 @@ class CacheInvalidationIndexPlugin : Plugin<Project> {
             "cacheInvalidationIndex",
             CacheInvalidationIndexTask::class.java,
             FindDependencyPairsImpl(),
-            BuildDagFromDependencyPairsImpl()
+            BuildDagFromDependencyPairsImpl(),
+            AffectedSubgraphsImpl()
         )
         cacheInvalidationIndexTaskProvider.configure { task ->
             task.configurationToAnalyze.set(extension.configurationToAnalyze)
