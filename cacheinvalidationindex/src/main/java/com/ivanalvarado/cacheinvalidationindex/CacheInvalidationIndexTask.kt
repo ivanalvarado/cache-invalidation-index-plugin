@@ -26,5 +26,7 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         println("Dependency Pairs: $sampleList")
         val dag = buildDagFromDependencyPairs(sampleList)
         println("DAG: $dag")
+        val affectedSubgraphs = affectedSubgraphs(dag)
+        println("Affected Subgraphs: $affectedSubgraphs")
     }
 }
