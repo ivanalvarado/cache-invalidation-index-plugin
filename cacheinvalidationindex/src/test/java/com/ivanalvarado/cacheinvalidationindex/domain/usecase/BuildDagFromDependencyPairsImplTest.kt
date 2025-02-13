@@ -18,10 +18,10 @@ class BuildDagFromDependencyPairsImplTest {
         // Given
         val dependencyPairs = getDependencyPairs()
         val expected = DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-            .addEdge("root", "feature", DependencyEdge("implementation"))
-            .addEdge("feature", "featureImpl", DependencyEdge("implementation"))
-            .addEdge("featureImpl", "library", DependencyEdge("api"))
-            .addEdge("library", "testingLibrary", DependencyEdge("testImplementation"))
+            .addEdge(":", ":feature", DependencyEdge("implementation"))
+            .addEdge(":feature", ":featureImpl", DependencyEdge("implementation"))
+            .addEdge(":featureImpl", ":library", DependencyEdge("api"))
+            .addEdge(":library", ":testingLibrary", DependencyEdge("testImplementation"))
             .build()
 
         // When
@@ -33,16 +33,21 @@ class BuildDagFromDependencyPairsImplTest {
     }
 
     private fun getDependencyPairs(): List<Triple<Project, Project, String>> {
+        val root = ProjectBuilder.builder().withName("root").build()
+        val feature = buildProjectWithParent("feature", root)
+        val featureImpl = buildProjectWithParent("featureImpl", root)
+        val library = buildProjectWithParent("library", root)
+        val testingLibrary = buildProjectWithParent("testingLibrary", root)
         return listOf(
-            Triple(buildProject("root"), buildProject("feature"), "implementation"),
-            Triple(buildProject("feature"), buildProject("featureImpl"), "implementation"),
-            Triple(buildProject("featureImpl"), buildProject("library"), "api"),
-            Triple(buildProject("library"), buildProject("testingLibrary"), "testImplementation")
+            Triple(root, feature, "implementation"),
+            Triple(feature, featureImpl, "implementation"),
+            Triple(featureImpl, library, "api"),
+            Triple(library, testingLibrary, "testImplementation")
         )
     }
 
-    private fun buildProject(name: String): Project {
-        return ProjectBuilder.builder().withName(name).build()
+    private fun buildProjectWithParent(name: String, parent: Project): Project {
+        return ProjectBuilder.builder().withName(name).withParent(parent).build()
     }
 
     private fun Graph<String, DependencyEdge>.toEdgeTriples(): Set<Triple<String, String, String>> {

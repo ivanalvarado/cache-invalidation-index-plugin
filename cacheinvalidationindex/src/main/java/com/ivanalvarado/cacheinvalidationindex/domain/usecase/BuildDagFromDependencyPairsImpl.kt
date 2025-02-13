@@ -12,9 +12,9 @@ class BuildDagFromDependencyPairsImpl : BuildDagFromDependencyPairs {
         val dag = DirectedAcyclicGraph<String, DependencyEdge>(DependencyEdge::class.java)
 
         dependencyPairs.forEach { (project, dependency, configuration) ->
-            dag.addVertex(project.name)
-            dag.addVertex(dependency.name)
-            dag.addEdge(project.name, dependency.name, DependencyEdge(configuration))
+            dag.addVertex(project.path)
+            dag.addVertex(dependency.path)
+            dag.addEdge(project.path, dependency.path, DependencyEdge(configuration))
         }
 
         return dag
