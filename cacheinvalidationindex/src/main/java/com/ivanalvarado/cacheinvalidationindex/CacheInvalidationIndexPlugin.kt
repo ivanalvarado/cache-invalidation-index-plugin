@@ -3,6 +3,7 @@ package com.ivanalvarado.cacheinvalidationindex
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.AffectedSubgraphsImpl
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairsImpl
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairsImpl
+import com.ivanalvarado.cacheinvalidationindex.writer.GraphVizWriter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.internal.configuration.problems.taskPathFrom
@@ -20,7 +21,8 @@ class CacheInvalidationIndexPlugin : Plugin<Project> {
             CacheInvalidationIndexTask::class.java,
             FindDependencyPairsImpl(),
             BuildDagFromDependencyPairsImpl(),
-            AffectedSubgraphsImpl()
+            AffectedSubgraphsImpl(),
+            GraphVizWriter()
         )
         cacheInvalidationIndexTaskProvider.configure { task ->
             task.configurationToAnalyze.set(extension.configurationToAnalyze)
