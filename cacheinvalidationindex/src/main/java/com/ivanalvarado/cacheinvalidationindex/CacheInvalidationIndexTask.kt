@@ -3,6 +3,7 @@ package com.ivanalvarado.cacheinvalidationindex
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.AffectedSubgraphs
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairs
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairs
+import com.ivanalvarado.cacheinvalidationindex.writer.GraphVizWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
@@ -12,7 +13,8 @@ import javax.inject.Inject
 abstract class CacheInvalidationIndexTask @Inject constructor(
     private val findDependencyPairs: FindDependencyPairs,
     private val buildDagFromDependencyPairs: BuildDagFromDependencyPairs,
-    private val affectedSubgraphs: AffectedSubgraphs
+    private val affectedSubgraphs: AffectedSubgraphs,
+    private val graphVizWriter: GraphVizWriter
 ) : DefaultTask() {
 
     @get:Input
@@ -23,10 +25,11 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         val rootProject = project.rootProject
         val configurationsToAnalyze = configurationToAnalyze.get()
         val sampleList = findDependencyPairs(rootProject, configurationsToAnalyze)
-        println("Dependency Pairs: $sampleList")
         val dag = buildDagFromDependencyPairs(sampleList)
-        println("DAG: $dag")
         val affectedSubgraphs = affectedSubgraphs(dag)
-        println("Affected Subgraphs: $affectedSubgraphs")
+        graphVizWriter.writeGraph(
+            graph = affectedSubgraphs.find { it.node == project.path }!!.affectedDag,
+            file = project.file("build/graph.dot")
+        )
     }
 }
