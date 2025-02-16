@@ -1,10 +1,13 @@
 package com.ivanalvarado.cacheinvalidationindex.writer
 
 import com.ivanalvarado.cacheinvalidationindex.domain.model.DependencyEdge
+import guru.nidi.graphviz.engine.Format
+import guru.nidi.graphviz.engine.Graphviz
 import org.jgrapht.graph.AbstractGraph
 import org.jgrapht.nio.DefaultAttribute
 import org.jgrapht.nio.dot.DOTExporter
 import java.io.File
+import java.io.StringWriter
 
 class GraphVizWriter {
 
@@ -25,8 +28,14 @@ class GraphVizWriter {
             }
         }
 
+        val writer = StringWriter()
+        exporter.exportGraph(graph, writer)
+        val dotString = writer.toString()
+
         file.delete()
-        exporter.exportGraph(graph, file)
+        Graphviz.fromString(dotString)
+            .render(Format.PNG)
+            .toFile(file)
     }
 
     private fun String.sanitize(): String {

@@ -29,7 +29,7 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         val affectedSubgraphs = affectedSubgraphs(dag)
         graphVizWriter.writeGraph(
             graph = affectedSubgraphs.find { it.node == project.path }!!.affectedDag,
-            file = project.file("build/graph.dot")
+            file = project.file("build/cacheinvalidationindex/dependency_graph.png")
         )
     }
 }

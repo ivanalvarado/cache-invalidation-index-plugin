@@ -18,6 +18,7 @@ gradlePlugin {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation(libs.graphviz.java)
     implementation(libs.jgrapht.core)
     implementation(libs.jgrapht.io)
 
