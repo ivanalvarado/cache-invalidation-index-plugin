@@ -1,6 +1,6 @@
 [versions]
 graphviz-java = "0.18.1"
-jetbrainsKotlinJvm = "1.9.24"
+jetbrainsKotlinJvm = "2.1.10"
 jgrapht = "1.5.1"
 junit = "4.13.2"
 truth = "1.4.4"
