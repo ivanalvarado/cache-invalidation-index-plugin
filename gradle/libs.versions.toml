@@ -3,6 +3,7 @@ graphviz-java = "0.18.1"
 jetbrainsKotlinJvm = "1.9.24"
 jgrapht = "1.5.2"
 junit = "4.13.2"
+moshi = "1.15.2"
 truth = "1.4.4"
 
 [libraries]
@@ -10,6 +11,8 @@ graphviz-java = { group = "guru.nidi", name = "graphviz-java", version.ref = "gr
 jgrapht-core = { group = "org.jgrapht", name = "jgrapht-core", version.ref = "jgrapht" }
 jgrapht-io = { group = "org.jgrapht", name = "jgrapht-io", version.ref = "jgrapht" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]

@@ -4,6 +4,7 @@ import com.ivanalvarado.cacheinvalidationindex.domain.usecase.AffectedSubgraphs
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.BuildDagFromDependencyPairs
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.CalculateCacheInvalidationIndex
 import com.ivanalvarado.cacheinvalidationindex.domain.usecase.FindDependencyPairs
+import com.ivanalvarado.cacheinvalidationindex.writer.CacheInvalidationIndexWriter
 import com.ivanalvarado.cacheinvalidationindex.writer.GraphVizWriter
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.SetProperty
@@ -16,7 +17,8 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
     private val buildDagFromDependencyPairs: BuildDagFromDependencyPairs,
     private val affectedSubgraphs: AffectedSubgraphs,
     private val calculateCacheInvalidationIndex: CalculateCacheInvalidationIndex,
-    private val graphVizWriter: GraphVizWriter
+    private val graphVizWriter: GraphVizWriter,
+    private val cacheInvalidationIndexWriter: CacheInvalidationIndexWriter
 ) : DefaultTask() {
 
     @get:Input
@@ -32,6 +34,11 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         val affectedDag = affectedSubgraphs.find { it.node == project.path }!!.affectedDag
         val cacheInvalidationIndex = calculateCacheInvalidationIndex(affectedDag)
         println("cacheInvalidationIndex: $cacheInvalidationIndex")
+        cacheInvalidationIndexWriter.writeIndex(
+            project = project.path,
+            index = cacheInvalidationIndex,
+            file = project.file("build/cacheinvalidationindex/index.json")
+        )
         graphVizWriter.writeGraph(
             graph = affectedDag,
             file = project.file("build/cacheinvalidationindex/dependency_graph.png")
