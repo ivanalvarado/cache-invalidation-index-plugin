@@ -33,7 +33,6 @@ abstract class CacheInvalidationIndexTask @Inject constructor(
         val affectedSubgraphs = affectedSubgraphs(dag)
         val affectedDag = affectedSubgraphs.find { it.node == project.path }!!.affectedDag
         val cacheInvalidationIndex = calculateCacheInvalidationIndex(affectedDag)
-        println("cacheInvalidationIndex: $cacheInvalidationIndex")
         cacheInvalidationIndexWriter.writeIndex(
             project = project.path,
             index = cacheInvalidationIndex,
