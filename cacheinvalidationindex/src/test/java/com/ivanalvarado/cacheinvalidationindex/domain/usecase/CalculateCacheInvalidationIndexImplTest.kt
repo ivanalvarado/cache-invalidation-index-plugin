@@ -6,7 +6,6 @@ import org.jgrapht.graph.DirectedAcyclicGraph
 import org.junit.Test
 
 class CalculateCacheInvalidationIndexImplTest {
-
     private val calculateCacheInvalidationIndex = CalculateCacheInvalidationIndexImpl()
 
     @Test

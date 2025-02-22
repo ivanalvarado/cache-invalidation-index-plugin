@@ -6,7 +6,6 @@ import org.gradle.testfixtures.ProjectBuilder
 import org.junit.Test
 
 class FindDependencyPairsImplTest {
-
     val findDependencyPairs = FindDependencyPairsImpl()
 
     @Test
@@ -17,18 +16,19 @@ class FindDependencyPairsImplTest {
         val featureImplProject = featureProject.subprojects.first()
         val libraryProject = featureImplProject.subprojects.first()
         val configurationsToAnalyse = setOf("implementation", "api")
-        val expected = listOf(
-            Triple(
-                featureProject,
-                featureImplProject,
-                "implementation"
-            ),
-            Triple(
-                featureImplProject,
-                libraryProject,
-                "api"
+        val expected =
+            listOf(
+                Triple(
+                    featureProject,
+                    featureImplProject,
+                    "implementation",
+                ),
+                Triple(
+                    featureImplProject,
+                    libraryProject,
+                    "api",
+                ),
             )
-        )
 
         // When
         val result = findDependencyPairs(rootProject, configurationsToAnalyse)
@@ -54,22 +54,26 @@ class FindDependencyPairsImplTest {
      */
     private fun buildProject(): Project {
         val rootProject = ProjectBuilder.builder().withName("root").build()
-        val featureProject = ProjectBuilder.builder()
-            .withName("feature")
-            .withParent(rootProject)
-            .build()
-        val featureImplProject = ProjectBuilder.builder()
-            .withName("featureImpl")
-            .withParent(featureProject)
-            .build()
-        val libraryProject = ProjectBuilder.builder()
-            .withName("library")
-            .withParent(featureImplProject)
-            .build()
-        val testingLibraryProject = ProjectBuilder.builder()
-            .withName("testingLibrary")
-            .withParent(libraryProject)
-            .build()
+        val featureProject =
+            ProjectBuilder.builder()
+                .withName("feature")
+                .withParent(rootProject)
+                .build()
+        val featureImplProject =
+            ProjectBuilder.builder()
+                .withName("featureImpl")
+                .withParent(featureProject)
+                .build()
+        val libraryProject =
+            ProjectBuilder.builder()
+                .withName("library")
+                .withParent(featureImplProject)
+                .build()
+        val testingLibraryProject =
+            ProjectBuilder.builder()
+                .withName("testingLibrary")
+                .withParent(libraryProject)
+                .build()
 
         (rootProject as org.gradle.api.internal.project.DefaultProject)
             .childProjects[featureProject.name] = featureProject

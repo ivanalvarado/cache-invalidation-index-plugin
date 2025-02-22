@@ -10,11 +10,14 @@ import java.io.File
 import java.io.StringWriter
 
 class GraphVizWriter {
-
-    fun writeGraph(graph: AbstractGraph<String, DependencyEdge>, file: File) {
-        val exporter = DOTExporter<String, DependencyEdge> { vertex ->
-            vertex.sanitize()
-        }
+    fun writeGraph(
+        graph: AbstractGraph<String, DependencyEdge>,
+        file: File,
+    ) {
+        val exporter =
+            DOTExporter<String, DependencyEdge> { vertex ->
+                vertex.sanitize()
+            }
 
         exporter.setVertexAttributeProvider { vertex ->
             buildMap {

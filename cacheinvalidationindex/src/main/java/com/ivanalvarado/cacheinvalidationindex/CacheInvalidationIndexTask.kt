@@ -12,35 +12,36 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
-abstract class CacheInvalidationIndexTask @Inject constructor(
-    private val findDependencyPairs: FindDependencyPairs,
-    private val buildDagFromDependencyPairs: BuildDagFromDependencyPairs,
-    private val affectedSubgraphs: AffectedSubgraphs,
-    private val calculateCacheInvalidationIndex: CalculateCacheInvalidationIndex,
-    private val graphVizWriter: GraphVizWriter,
-    private val cacheInvalidationIndexWriter: CacheInvalidationIndexWriter
-) : DefaultTask() {
+abstract class CacheInvalidationIndexTask
+    @Inject
+    constructor(
+        private val findDependencyPairs: FindDependencyPairs,
+        private val buildDagFromDependencyPairs: BuildDagFromDependencyPairs,
+        private val affectedSubgraphs: AffectedSubgraphs,
+        private val calculateCacheInvalidationIndex: CalculateCacheInvalidationIndex,
+        private val graphVizWriter: GraphVizWriter,
+        private val cacheInvalidationIndexWriter: CacheInvalidationIndexWriter,
+    ) : DefaultTask() {
+        @get:Input
+        abstract val configurationToAnalyze: SetProperty<String>
 
-    @get:Input
-    abstract val configurationToAnalyze: SetProperty<String>
-
-    @TaskAction
-    fun run() {
-        val rootProject = project.rootProject
-        val configurationsToAnalyze = configurationToAnalyze.get()
-        val sampleList = findDependencyPairs(rootProject, configurationsToAnalyze)
-        val dag = buildDagFromDependencyPairs(sampleList)
-        val affectedSubgraphs = affectedSubgraphs(dag)
-        val affectedDag = affectedSubgraphs.find { it.node == project.path }!!.affectedDag
-        val cacheInvalidationIndex = calculateCacheInvalidationIndex(affectedDag)
-        cacheInvalidationIndexWriter.writeIndex(
-            project = project.path,
-            index = cacheInvalidationIndex,
-            file = project.file("build/cacheinvalidationindex/index.json")
-        )
-        graphVizWriter.writeGraph(
-            graph = affectedDag,
-            file = project.file("build/cacheinvalidationindex/dependency_graph.png")
-        )
+        @TaskAction
+        fun run() {
+            val rootProject = project.rootProject
+            val configurationsToAnalyze = configurationToAnalyze.get()
+            val sampleList = findDependencyPairs(rootProject, configurationsToAnalyze)
+            val dag = buildDagFromDependencyPairs(sampleList)
+            val affectedSubgraphs = affectedSubgraphs(dag)
+            val affectedDag = affectedSubgraphs.find { it.node == project.path }!!.affectedDag
+            val cacheInvalidationIndex = calculateCacheInvalidationIndex(affectedDag)
+            cacheInvalidationIndexWriter.writeIndex(
+                project = project.path,
+                index = cacheInvalidationIndex,
+                file = project.file("build/cacheinvalidationindex/index.json"),
+            )
+            graphVizWriter.writeGraph(
+                graph = affectedDag,
+                file = project.file("build/cacheinvalidationindex/dependency_graph.png"),
+            )
+        }
     }
-}

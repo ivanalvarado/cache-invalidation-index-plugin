@@ -4,5 +4,5 @@ import org.jgrapht.graph.AbstractGraph
 
 data class AffectedSubgraphDetails(
     val node: String,
-    val affectedDag: AbstractGraph<String, DependencyEdge>
+    val affectedDag: AbstractGraph<String, DependencyEdge>,
 )

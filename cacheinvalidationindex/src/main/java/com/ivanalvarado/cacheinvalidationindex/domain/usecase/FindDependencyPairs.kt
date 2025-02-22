@@ -5,6 +5,6 @@ import org.gradle.api.Project
 interface FindDependencyPairs {
     operator fun invoke(
         project: Project,
-        configurationsToAnalyse: Set<String>
+        configurationsToAnalyse: Set<String>,
     ): List<Triple<Project, Project, String>>
 }

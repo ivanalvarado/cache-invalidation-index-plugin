@@ -8,26 +8,27 @@ import com.ivanalvarado.cacheinvalidationindex.writer.CacheInvalidationIndexWrit
 import com.ivanalvarado.cacheinvalidationindex.writer.GraphVizWriter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.internal.configuration.problems.taskPathFrom
 
 class CacheInvalidationIndexPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val extension = project.extensions.create(
-            CacheInvalidationIndexExtension::class.java,
-            "cacheInvalidationIndex",
-            CacheInvalidationIndexExtension::class.java
-        )
+        val extension =
+            project.extensions.create(
+                CacheInvalidationIndexExtension::class.java,
+                "cacheInvalidationIndex",
+                CacheInvalidationIndexExtension::class.java,
+            )
 
-        val cacheInvalidationIndexTaskProvider = project.tasks.register(
-            "cacheInvalidationIndex",
-            CacheInvalidationIndexTask::class.java,
-            FindDependencyPairsImpl(),
-            BuildDagFromDependencyPairsImpl(),
-            AffectedSubgraphsImpl(),
-            CalculateCacheInvalidationIndexImpl(),
-            GraphVizWriter(),
-            CacheInvalidationIndexWriter()
-        )
+        val cacheInvalidationIndexTaskProvider =
+            project.tasks.register(
+                "cacheInvalidationIndex",
+                CacheInvalidationIndexTask::class.java,
+                FindDependencyPairsImpl(),
+                BuildDagFromDependencyPairsImpl(),
+                AffectedSubgraphsImpl(),
+                CalculateCacheInvalidationIndexImpl(),
+                GraphVizWriter(),
+                CacheInvalidationIndexWriter(),
+            )
         cacheInvalidationIndexTaskProvider.configure { task ->
             task.configurationToAnalyze.set(extension.configurationToAnalyze)
             task.group = "Example"
