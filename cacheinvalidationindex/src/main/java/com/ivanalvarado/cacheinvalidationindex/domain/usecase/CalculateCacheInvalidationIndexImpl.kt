@@ -5,8 +5,9 @@ import org.jgrapht.graph.AbstractGraph
 
 class CalculateCacheInvalidationIndexImpl : CalculateCacheInvalidationIndex {
     override operator fun invoke(dag: AbstractGraph<String, DependencyEdge>): Int {
-        val target = dag.vertexSet().find { dag.outgoingEdgesOf(it).isEmpty() }
-            ?: throw IllegalArgumentException("No target module found in DAG")
+        val target =
+            dag.vertexSet().find { dag.outgoingEdgesOf(it).isEmpty() }
+                ?: throw IllegalArgumentException("No target module found in DAG")
 
         val visited = mutableSetOf<String>()
         val stack = ArrayDeque<String>()

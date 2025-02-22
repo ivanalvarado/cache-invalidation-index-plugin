@@ -1,0 +1,6 @@
+[*.{kt,kts}]
+max_line_length=140
+
+[**/src/test/**/*.kt]
+# Allow unit test names to exceed 140 characters
+max_line_length = 10000

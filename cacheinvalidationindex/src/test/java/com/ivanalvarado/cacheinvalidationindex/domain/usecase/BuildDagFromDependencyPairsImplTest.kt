@@ -8,21 +8,20 @@ import org.jgrapht.Graph
 import org.jgrapht.graph.DirectedAcyclicGraph
 import org.junit.Test
 
-
 class BuildDagFromDependencyPairsImplTest {
-
     val buildDagFromDependencyPairs = BuildDagFromDependencyPairsImpl()
 
     @Test
     fun `invoke - given a list of dependency pairs, should return a directed acyclic graph`() {
         // Given
         val dependencyPairs = getDependencyPairs()
-        val expected = DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-            .addEdge(":", ":feature", DependencyEdge("implementation"))
-            .addEdge(":feature", ":featureImpl", DependencyEdge("implementation"))
-            .addEdge(":featureImpl", ":library", DependencyEdge("api"))
-            .addEdge(":library", ":testingLibrary", DependencyEdge("testImplementation"))
-            .build()
+        val expected =
+            DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                .addEdge(":", ":feature", DependencyEdge("implementation"))
+                .addEdge(":feature", ":featureImpl", DependencyEdge("implementation"))
+                .addEdge(":featureImpl", ":library", DependencyEdge("api"))
+                .addEdge(":library", ":testingLibrary", DependencyEdge("testImplementation"))
+                .build()
 
         // When
         val result = buildDagFromDependencyPairs(dependencyPairs)
@@ -42,11 +41,14 @@ class BuildDagFromDependencyPairsImplTest {
             Triple(root, feature, "implementation"),
             Triple(feature, featureImpl, "implementation"),
             Triple(featureImpl, library, "api"),
-            Triple(library, testingLibrary, "testImplementation")
+            Triple(library, testingLibrary, "testImplementation"),
         )
     }
 
-    private fun buildProjectWithParent(name: String, parent: Project): Project {
+    private fun buildProjectWithParent(
+        name: String,
+        parent: Project,
+    ): Project {
         return ProjectBuilder.builder().withName(name).withParent(parent).build()
     }
 

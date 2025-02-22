@@ -5,9 +5,7 @@ import com.ivanalvarado.cacheinvalidationindex.domain.model.DependencyEdge
 import org.jgrapht.graph.DirectedAcyclicGraph
 
 class AffectedSubgraphsImpl : AffectedSubgraphs {
-    override fun invoke(
-        graph: DirectedAcyclicGraph<String, DependencyEdge>
-    ): List<AffectedSubgraphDetails> {
+    override fun invoke(graph: DirectedAcyclicGraph<String, DependencyEdge>): List<AffectedSubgraphDetails> {
         return graph.vertexSet().map { node ->
             val subgraph = buildSubgraphForNode(graph, node)
             AffectedSubgraphDetails(node, subgraph)
@@ -16,7 +14,7 @@ class AffectedSubgraphsImpl : AffectedSubgraphs {
 
     private fun buildSubgraphForNode(
         graph: DirectedAcyclicGraph<String, DependencyEdge>,
-        node: String
+        node: String,
     ): DirectedAcyclicGraph<String, DependencyEdge> {
         val nodesToInclude = mutableSetOf<String>()
         val edgesToInclude = mutableSetOf<DependencyEdge>()
@@ -46,9 +44,10 @@ class AffectedSubgraphsImpl : AffectedSubgraphs {
         nodesToInclude.add(node)
         traverse(node)
 
-        val builder = DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(
-            DependencyEdge::class.java
-        )
+        val builder =
+            DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(
+                DependencyEdge::class.java,
+            )
         nodesToInclude.forEach { builder.addVertex(it) }
         edgesToInclude.forEach { edge ->
             val source = graph.getEdgeSource(edge)
@@ -61,4 +60,3 @@ class AffectedSubgraphsImpl : AffectedSubgraphs {
         return builder.build()
     }
 }
-

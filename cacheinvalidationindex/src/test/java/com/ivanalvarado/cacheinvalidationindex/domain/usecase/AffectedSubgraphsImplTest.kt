@@ -7,44 +7,56 @@ import org.jgrapht.graph.DirectedAcyclicGraph
 import org.junit.Test
 
 class AffectedSubgraphsImplTest {
-
     val affectedSubgraphs = AffectedSubgraphsImpl()
 
     @Test
     fun `invoke - given a directed acyclic graph, should return a list of sets of affected nodes`() {
         // Given
         val dag = getDag()
-        val expected = listOf(
-            AffectedSubgraphDetails("root", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addVertex("root")
-                .build()
-            ),
-            AffectedSubgraphDetails("feature", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addEdge("root", "feature", DependencyEdge("implementation"))
-                .build()
-            ),
-            AffectedSubgraphDetails("featureImpl", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addEdge("feature", "featureImpl", DependencyEdge("api"))
-                .addEdge("root", "feature", DependencyEdge("implementation"))
-                .build()
-            ),
-            AffectedSubgraphDetails("core", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addEdge("featureImpl", "core", DependencyEdge("api"))
-                .addEdge("feature", "featureImpl", DependencyEdge("api"))
-                .addEdge("root", "feature", DependencyEdge("implementation"))
-                .build()
-            ),
-            AffectedSubgraphDetails("library", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addEdge("featureImpl", "library", DependencyEdge("api"))
-                .addEdge("feature", "featureImpl", DependencyEdge("api"))
-                .addEdge("root", "feature", DependencyEdge("implementation"))
-                .build()
-            ),
-            AffectedSubgraphDetails("testingLibrary", DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
-                .addVertex("testingLibrary")
-                .build()
+        val expected =
+            listOf(
+                AffectedSubgraphDetails(
+                    "root",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addVertex("root")
+                        .build(),
+                ),
+                AffectedSubgraphDetails(
+                    "feature",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addEdge("root", "feature", DependencyEdge("implementation"))
+                        .build(),
+                ),
+                AffectedSubgraphDetails(
+                    "featureImpl",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addEdge("feature", "featureImpl", DependencyEdge("api"))
+                        .addEdge("root", "feature", DependencyEdge("implementation"))
+                        .build(),
+                ),
+                AffectedSubgraphDetails(
+                    "core",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addEdge("featureImpl", "core", DependencyEdge("api"))
+                        .addEdge("feature", "featureImpl", DependencyEdge("api"))
+                        .addEdge("root", "feature", DependencyEdge("implementation"))
+                        .build(),
+                ),
+                AffectedSubgraphDetails(
+                    "library",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addEdge("featureImpl", "library", DependencyEdge("api"))
+                        .addEdge("feature", "featureImpl", DependencyEdge("api"))
+                        .addEdge("root", "feature", DependencyEdge("implementation"))
+                        .build(),
+                ),
+                AffectedSubgraphDetails(
+                    "testingLibrary",
+                    DirectedAcyclicGraph.createBuilder<String, DependencyEdge>(DependencyEdge::class.java)
+                        .addVertex("testingLibrary")
+                        .build(),
+                ),
             )
-        )
 
         // When
         val result = affectedSubgraphs(dag)
