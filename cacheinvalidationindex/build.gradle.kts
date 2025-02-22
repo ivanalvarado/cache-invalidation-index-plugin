@@ -2,6 +2,7 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     kotlin("jvm")
+    alias(libs.plugins.ktlint)
 }
 
 group = "com.ivanalvarado"

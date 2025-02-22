@@ -3,6 +3,7 @@ graphviz-java = "0.18.1"
 jetbrainsKotlinJvm = "1.9.24"
 jgrapht = "1.5.2"
 junit = "4.13.2"
+ktlint = "12.1.2"
 moshi = "1.15.2"
 truth = "1.4.4"
 
@@ -17,3 +18,4 @@ truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
